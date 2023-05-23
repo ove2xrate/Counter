@@ -15,7 +15,6 @@ extension UITextView {
     }
 }
 class ViewController: UIViewController {
-    
     private var newCount:Int = 0
     private var count:Int = 0
     private var arrayEditHistory:[String] = ["История изменений:"]
@@ -27,6 +26,13 @@ class ViewController: UIViewController {
         let formattedDateTime = dtFormatter.string(from: now)
         return formattedDateTime
     }
+    func addText () -> String {
+        var sum:String = ""
+        for arrayEditHistorys in arrayEditHistory {
+            sum += arrayEditHistorys + "\n"
+            }
+        return sum
+        }
     
     @IBOutlet weak var counterReadings: UILabel!
     @IBAction func buttonCounter(_ sender: Any) {
@@ -34,7 +40,7 @@ class ViewController: UIViewController {
         count = newCount
         self.counterReadings.text = "Значение счётчика: \(newCount)"
         self.arrayEditHistory.append("\(addTime()): значение изменено на +1")
-        self.editHistory.text = "\(arrayEditHistory)"
+        self.editHistory.text = "\(addText())"
         editHistory.simple_scrollToBottom()
     }
     
@@ -44,27 +50,27 @@ class ViewController: UIViewController {
         newCount = count - 1
         if (newCount < 0) {
             self.arrayEditHistory.append("\(addTime()): попытка уменьшить значение счётчика ниже 0")
-            self.editHistory.text = "\(arrayEditHistory)"
+            self.editHistory.text = "\(addText())"
             editHistory.simple_scrollToBottom()
         }
         else {
             count = newCount
             self.counterReadings.text = "Значение счётчика: \(newCount)"
             self.arrayEditHistory.append("\(addTime()): значение изменено на -1")
-            self.editHistory.text = "\(arrayEditHistory)"
+            self.editHistory.text = "\(addText())"
             editHistory.simple_scrollToBottom()
             return
         }
     }
     
-    @IBAction func buttonRefresh(_ sender: Any) {
+  @IBAction func buttonRefresh(_ sender: Any) {
         newCount = 0
         count = newCount
         self.counterReadings.text = "Значение счётчика: \(newCount)"
         if arrayEditHistory.count == 1 {
         }
         else { self.arrayEditHistory.append("\(addTime()): значение сброшено")
-            self.editHistory.text = "\(arrayEditHistory)"
+            self.editHistory.text = "\(addText())"
             editHistory.simple_scrollToBottom()
         }
     }
@@ -73,15 +79,15 @@ class ViewController: UIViewController {
         if let first = arrayEditHistory.first {
             arrayEditHistory = [first]
         }
-        self.editHistory.text = "\(arrayEditHistory)"
+        self.editHistory.text = "\(addText())"
         editHistory.simple_scrollToBottom()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         editHistory.isEditable = false
         self.counterReadings.text = "Значение счётчика: \(newCount)"
-        self.editHistory.text = "\(arrayEditHistory)"
+        self.editHistory.text = "\(addText())"
         editHistory.simple_scrollToBottom()
         }
     }
